@@ -18,12 +18,13 @@ import Big from 'as-big/Big';
 let x = Big.of(42);
 let y = Big.of('13');
 
-let a = x + y;  // Big(55)
-// let a = x.plus(y);
+let a = x + y;          // Big(55)
+// let a = x.plus(y);   // Big(55)
 
-let a0 = a.pres(1)  // Big(60)
+let a0 = a.prec(1);     // Big(60)
 
-let b = a.toNumber() + 1; // 56
+let aNum = a.toNumber() + 1;    // 56
+let aStr = a.toString();        // "55"
 ```
 
 ## Build

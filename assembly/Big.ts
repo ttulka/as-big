@@ -10,6 +10,30 @@ export declare function logme(expected: i32, actual: i32): void
 export default class Big {
 
     /**
+     * {Big} instance with the value zero {0}.
+     */
+    @lazy
+    static ZERO: Big = Big.zero();
+
+    /**
+     * {Big} instance with the value one {1}.
+     */
+    @lazy
+    static ONE: Big = Big.one();
+
+    /**
+     * {Big} instance with the value two {2}.
+     */
+    @lazy
+    static TWO: Big = Big.two();
+
+    /**
+     * {Big} instance with the value ten {10}.
+     */
+    @lazy
+    static TEN: Big = Big.ten();
+
+    /**
      * The positive exponent (PE) at and above which toString returns exponential notation.
      * 1000000 is the maximum recommended exponent value of a Big, but this limit is not enforced.
      */
@@ -91,6 +115,25 @@ export default class Big {
     static one(): Big {
         const arr = new Array<u8>(1);
         arr[0] = 1;
+        return new Big(1, 0, arr);
+    }
+
+    /**
+     * Returns a {Big} with the value {2} (two).
+     */
+    static two(): Big {
+        const arr = new Array<u8>(1);
+        arr[0] = 2;
+        return new Big(1, 0, arr);
+    }
+
+    /**
+     * Returns a {Big} with the value {10} (ten).
+     */
+    static ten(): Big {
+        const arr = new Array<u8>(2);
+        arr[0] = 0;
+        arr[1] = 1;
         return new Big(1, 0, arr);
     }
 
@@ -334,7 +377,7 @@ export default class Big {
     //@operator('-')
     minus<T>(y: T): Big {
         let by = Big.of(y);
-        if (this.eq(by)) return Big.zero();
+        if (this.eq(by)) return Big.ZERO;
 
         let i: i32, j: i32, t: Array<u8>, xlty: i32,
             x = this,
@@ -692,7 +735,7 @@ export default class Big {
     @operator('^')
     pow(n: i32): Big {
         let x = this,
-            one = Big.one(),
+            one = Big.ONE,
             y = one,
             isneg = n < 0;
 
