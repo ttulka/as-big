@@ -1,4 +1,4 @@
-# AS big
+# as-big
 
 AssemblyScript library for arbitrary-precision decimal arithmetic.
 
