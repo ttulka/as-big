@@ -1,0 +1,29 @@
+{
+  "name": "as-big",
+  "version": "0.1.0",
+  "description": "AssemblyScript library for arbitrary-precision decimal arithmetic.",
+  "author": "Tomas Tulkas (ttulka)",
+  "license": "MIT",
+  "homepage": "https://github.com/ttulka/as-big",
+  "keywords": [
+    "assemblyscript",
+    "math",
+    "decimal",
+    "float",
+    "big",
+    "numer",
+    "precision"
+  ],
+  "types": "assembly/index.ts",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests",
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
+  },
+  "devDependencies": {
+    "@assemblyscript/loader": "^0.18.12",
+    "assemblyscript": "^0.18.12"
+  }
+}
