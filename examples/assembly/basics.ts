@@ -10,5 +10,6 @@ export function basics(): number {
     
     let a0 = a.prec(1);     // Big(60)
 
-    return (Big.TWO * Big.TWO + a0 / Big.TWO).toNumber();
+    return (Big.TWO * Big.TWO + a0 / Big.TWO + Big.ONE).toNumber();
+    // return (a0 + Big.TEN / Big.TWO).toNumber();
 }

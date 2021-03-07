@@ -25,6 +25,8 @@ let a0 = a.prec(1);     // Big(60)
 
 let aNum = a.toNumber() + 1;    // 56
 let aStr = a.toString();        // "55"
+
+let c = a0 + Big.TEN / Big.TWO; // Big(65)
 ```
 
 ## Build

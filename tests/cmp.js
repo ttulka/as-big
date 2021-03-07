@@ -13,6 +13,8 @@ strictEqual(cmp('123', '123'), 0);
 strictEqual(cmp('-123', '123'), -1);
 strictEqual(cmp('123', '-123'), 1);
 strictEqual(cmp('-123', '-123'), 0);
+strictEqual(cmp('10', '10'), 0);
+strictEqual(cmp('-10', '-10'), 0);
 
 strictEqual(cmp('5e-324', '0'), 1);
 strictEqual(cmp('0', '5e-324'), -1);

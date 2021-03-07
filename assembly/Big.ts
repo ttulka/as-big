@@ -131,10 +131,9 @@ export default class Big {
      * Returns a {Big} with the value {10} (ten).
      */
     static ten(): Big {
-        const arr = new Array<u8>(2);
-        arr[0] = 0;
-        arr[1] = 1;
-        return new Big(1, 0, arr);
+        const arr = new Array<u8>(1);
+        arr[0] = 1;
+        return new Big(1, 1, arr);
     }
 
     /**
@@ -849,7 +848,7 @@ export default class Big {
         const s = this.toString();
         const n = F64.parseFloat(s);
 
-        if (!this.eq(Big.of(n))) {
+        if (this.neq(Big.of(n))) {
             throw new RangeError('Out of float64 range: ' + s);
         }
 
