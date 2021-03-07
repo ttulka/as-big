@@ -2,7 +2,7 @@
 
 AssemblyScript library for arbitrary-precision decimal arithmetic.
 
-Highly inspired by [https://github.com/MikeMcl/big.js](big.js)
+Highly inspired by [big.js](https://github.com/MikeMcl/big.js)
 
 ## Install
 
