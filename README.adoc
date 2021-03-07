@@ -4,7 +4,14 @@ AssemblyScript library for arbitrary-precision decimal arithmetic.
 
 Highly inspired by https://github.com/MikeMcl/big.js[big.js]
 
-== Usage
+== Install
+
+[source,sh]
+----
+npm install as-big --save-dev
+----
+
+== Use
 
 [source,typescript]
 ----
