@@ -13,25 +13,25 @@ export default class Big {
      * {Big} instance with the value zero {0}.
      */
     @lazy
-    static ZERO: Big = Big.zero();
+    static readonly ZERO: Big = Big.zero();
 
     /**
      * {Big} instance with the value one {1}.
      */
     @lazy
-    static ONE: Big = Big.one();
+    static readonly ONE: Big = Big.one();
 
     /**
      * {Big} instance with the value two {2}.
      */
     @lazy
-    static TWO: Big = Big.two();
+    static readonly TWO: Big = Big.two();
 
     /**
      * {Big} instance with the value ten {10}.
      */
     @lazy
-    static TEN: Big = Big.ten();
+    static readonly TEN: Big = Big.ten();
 
     /**
      * The positive exponent (PE) at and above which toString returns exponential notation.
