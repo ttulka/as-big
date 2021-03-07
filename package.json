@@ -1,6 +1,6 @@
 {
   "name": "as-big",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AssemblyScript library for arbitrary-precision decimal arithmetic.",
   "author": "Tomas Tulkas (ttulka)",
   "license": "MIT",

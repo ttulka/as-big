@@ -1,20 +1,18 @@
-= AS big
+# AS big
 
 AssemblyScript library for arbitrary-precision decimal arithmetic.
 
-Highly inspired by https://github.com/MikeMcl/big.js[big.js]
+Highly inspired by [https://github.com/MikeMcl/big.js](big.js)
 
-== Install
+## Install
 
-[source,sh]
-----
+```sh
 npm install as-big --save-dev
-----
+```
 
-== Use
+## Use
 
-[source,typescript]
-----
+```typescript
 import Big from 'as-big/Big';
 
 let x = Big.of(42);
@@ -26,36 +24,33 @@ let a = x + y;  // Big(55)
 let a0 = a.pres(1)  // Big(60)
 
 let b = a.toNumber() + 1; // 56
-----
+```
 
-== Build
+## Build
 
 The `assembly` directory contains AS source code.
 
-[source,sh]
-----
+```sh
 npm i
 npm run asbuild
-----
+```
 
-== Test
+## Test
 
 The `tests` directory contains unit all tests.
 
 Run all the tests:
 
-[source,sh]
-----
+```sh
 npm test
-----
+```
 
 Test a single method:
 
-[source,sh]
-----
+```sh
 node tests/<method>
-----
+```
 
-== Licence
+## Licence
 
-https://github.com/MikeMcl/big.js/blob/master/LICENCE.md[MIT]
+[MIT](https://github.com/ttulka/as-big/blob/main/LICENSE)
