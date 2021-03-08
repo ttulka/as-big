@@ -313,7 +313,7 @@ export default class Big {
      */
     //@operator('+')
     plus<T>(y: T): Big {
-        let yb = Big.copyOf(y);
+        let yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
         let e: i32, k: i32, t: Array<u8>,
             x = this;
 
@@ -398,7 +398,7 @@ export default class Big {
      */
     //@operator('-')
     minus<T>(y: T): Big {
-        let yb = Big.copyOf(y);
+        let yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
         if (this.eq(yb)) return Big.ZERO;
 
         let i: i32, j: i32, t: Array<u8>, xlty: i32,
@@ -515,7 +515,7 @@ export default class Big {
      */
     //@operator('*')
     times<T>(y: T): Big {
-        let yb = Big.copyOf(y);
+        let yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
         let c: Array<u8>,
             x = this,
             xc = x.c.slice(),
@@ -595,7 +595,7 @@ export default class Big {
      */
     //@operator('/')
     div<T>(y: T): Big {
-        let yb = Big.copyOf(y);
+        let yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
         var x = this,
             a = x.c,    // dividend
             b = yb.c,   // divisor
@@ -794,12 +794,12 @@ export default class Big {
             t = r;
 
         e = r.e + (Big.DP += 4);
-        
+
         // Newton-Raphson iteration
         do {
             t = r;
             r = t.plus(x.div(t)).times(Big.HALF).round(Big.DP);
-            
+
         } while (t.c.slice(0, e).join('') != r.c.slice(0, e).join(''));
 
         return this.__round(Big.copyOf(r), (Big.DP -= 4) + r.e + 1);
