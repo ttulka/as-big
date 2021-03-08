@@ -89,8 +89,8 @@ export default class Big {
      * @return the new {Big} instance
      */
     static of<T>(n: T): Big {
-        if (n instanceof Big) return new Big(n.s, n.e, n.c.slice())
-        if (n instanceof string) return new BigOfString(<string>n);
+        if (n instanceof Big) return n;
+        if (n instanceof string) return new BigOfString(n);
         if (n instanceof i8) return Big.of(n.toString());
         if (n instanceof u8) return Big.of(n.toString());
         if (n instanceof i16) return Big.of(n.toString());
@@ -106,7 +106,16 @@ export default class Big {
     }
 
     /**
-     * Returns a {Big} with the value {0} (zero).
+     * Creates a new instance of {Big} from {Big} {x}.
+     * 
+     * @param x the {Big} instance to make a copy from
+     */
+    static copyOf(x: Big): Big {
+        return new Big(x.s, x.e, x.c.slice());
+    }
+
+    /**
+     * Creates a new instance of {Big} with the value {0} (zero).
      */
     static zero(): Big {
         const arr = new Array<u8>(1);
@@ -115,7 +124,7 @@ export default class Big {
     }
 
     /**
-     * Returns a {Big} with the value {1} (one).
+     * Creates a new instance of {Big} with the value {1} (one).
      */
     static one(): Big {
         const arr = new Array<u8>(1);
@@ -124,7 +133,7 @@ export default class Big {
     }
 
     /**
-     * Returns a {Big} with the value {2} (two).
+     * Creates a new instance of {Big} with the value {2} (two).
      */
     static two(): Big {
         const arr = new Array<u8>(1);
@@ -133,7 +142,7 @@ export default class Big {
     }
 
     /**
-     * Returns a {Big} with the value {10} (ten).
+     * Creates a new instance of {Big} with the value {10} (ten).
      */
     static ten(): Big {
         const arr = new Array<u8>(1);
@@ -142,7 +151,7 @@ export default class Big {
     }
 
     /**
-     * Returns a {Big} with the value {0.5} (half).
+     * Creates a new instance of {Big} with the value {0.5} (half).
      */
     static half(): Big {
         const arr = new Array<u8>(1);
@@ -257,13 +266,13 @@ export default class Big {
      * @param y the {y}
      */
     cmp<T>(y: T): i8 {
-        const by = y instanceof Big ? y : Big.of(y);
+        const yb = y instanceof Big ? y : Big.of(y);
         let xc = this.c,
-            yc = by.c,
+            yc = yb.c,
             xs = this.s,
-            ys = by.s,
+            ys = yb.s,
             xe = this.e,
-            ye = by.e;
+            ye = yb.e;
 
         // either zero?
         if (!xc[0] || !yc[0]) return !xc[0] ? !yc[0] ? 0 : -ys : xs;
@@ -304,31 +313,31 @@ export default class Big {
      */
     //@operator('+')
     plus<T>(y: T): Big {
-        let by = Big.of(y);
+        let yb = Big.copyOf(y);
         let e: i32, k: i32, t: Array<u8>,
             x = this;
 
         // signs differ?
-        if (x.s != by.s) {
-            by.s = -by.s;
-            return x.minus(by);
+        if (x.s != yb.s) {
+            yb.s = -yb.s;
+            return x.minus(yb);
         }
 
         let xe = x.e,
             xc = x.c,
-            ye = by.e,
-            yc = by.c;
+            ye = yb.e,
+            yc = yb.c;
 
         // either zero?
         if (!xc[0] || !yc[0]) {
             if (!yc[0]) {
                 if (xc[0]) {
-                    by = Big.of(x);
+                    yb = Big.copyOf(x);
                 } else {
-                    by.s = x.s;
+                    yb.s = x.s;
                 }
             }
-            return by;
+            return yb;
         }
 
         xc = xc.slice();
@@ -372,10 +381,10 @@ export default class Big {
         // remove trailing zeros
         for (e = xc.length; xc[--e] === 0;) xc.pop();
 
-        by.c = xc;
-        by.e = ye;
+        yb.c = xc;
+        yb.e = ye;
 
-        return by;
+        return yb;
     }
 
     @operator('+')
@@ -389,35 +398,35 @@ export default class Big {
      */
     //@operator('-')
     minus<T>(y: T): Big {
-        let by = Big.of(y);
-        if (this.eq(by)) return Big.ZERO;
+        let yb = Big.copyOf(y);
+        if (this.eq(yb)) return Big.ZERO;
 
         let i: i32, j: i32, t: Array<u8>, xlty: i32,
             x = this,
             xs = x.s,
-            ys = by.s;
+            ys = yb.s;
 
         // signs differ?
         if (xs != ys) {
-            by.s = -ys;
-            return x.plus(by);
+            yb.s = -ys;
+            return x.plus(yb);
         }
 
         let xc = x.c.slice(),
             xe = x.e,
-            yc = by.c,
-            ye = by.e;
+            yc = yb.c,
+            ye = yb.e;
 
         // either zero?
         if (!xc[0] || !yc[0]) {
             if (yc[0]) {
-                by.s = -ys;
+                yb.s = -ys;
             } else if (xc[0]) {
-                by = Big.of(x);
+                yb = Big.copyOf(x);
             } else {
-                by.s = 1;
+                yb.s = 1;
             }
-            return by;
+            return yb;
         }
 
         let a: i32, b: i32;
@@ -453,7 +462,7 @@ export default class Big {
             t = xc;
             xc = yc;
             yc = t;
-            by.s = -by.s;
+            yb.s = -yb.s;
         }
 
         // append zeros to xc if shorter - no need to add zeros to yc if shorter as subtraction only needs to start at yc.length
@@ -481,7 +490,7 @@ export default class Big {
 
         if (!xc[0]) {
             // n - n = +0
-            by.s = 1;
+            yb.s = 1;
 
             // result must be zero
             xc = new Array<u8>(1);
@@ -489,10 +498,10 @@ export default class Big {
             ye = 0;
         }
 
-        by.c = xc;
-        by.e = ye;
+        yb.c = xc;
+        yb.e = ye;
 
-        return by;
+        return yb;
     }
 
     @operator('-')
@@ -506,29 +515,29 @@ export default class Big {
      */
     //@operator('*')
     times<T>(y: T): Big {
-        let by = Big.of(y);
+        let yb = Big.copyOf(y);
         let c: Array<u8>,
             x = this,
             xc = x.c.slice(),
-            yc = by.c,
+            yc = yb.c,
             a = xc.length,
             b = yc.length,
             i = x.e,
-            j = by.e;
+            j = yb.e;
 
         // determine sign of result
-        by.s = x.s == by.s ? 1 : -1;
+        yb.s = x.s == yb.s ? 1 : -1;
 
         // return signed 0 if either 0
         if (!xc[0] || !yc[0]) {
-            by.c = new Array<u8>(1);
-            by.c[0] = 0;
-            by.e = 0;
-            return by;
+            yb.c = new Array<u8>(1);
+            yb.c[0] = 0;
+            yb.e = 0;
+            return yb;
         }
 
         // initialise exponent of result as x.e + y.e
-        by.e = i + j;
+        yb.e = i + j;
 
         // if array xc has fewer digits than yc, swap xc and yc, and lengths
         if (a < b) {
@@ -564,14 +573,14 @@ export default class Big {
         }
 
         // increment result exponent if there is a final carry, otherwise remove leading zero
-        if (b) ++by.e;
+        if (b) ++yb.e;
         else c.shift();
 
         // remove trailing zeros
         for (i = c.length; !c[--i];) c.pop();
-        by.c = c;
+        yb.c = c;
 
-        return by;
+        return yb;
     }
 
     @operator('*')
@@ -586,7 +595,7 @@ export default class Big {
      */
     //@operator('/')
     div<T>(y: T): Big {
-        let yb = Big.of(y);
+        let yb = Big.copyOf(y);
         var x = this,
             a = x.c,    // dividend
             b = yb.c,   // divisor
@@ -704,30 +713,30 @@ export default class Big {
      */
     //@operator('%')
     mod<T>(y: T): Big {
-        let x = Big.of(this),
-            by = Big.of(y);
+        let x = Big.copyOf(this),
+            yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
 
-        if (!by.c[0]) {
+        if (!yb.c[0]) {
             throw new Error('Division by zero');
         }
 
         const xs = x.s,
-            ys = by.s;
-        x.s = by.s = 1;
-        const ygtx = by.cmp(x) == 1;
+            ys = yb.s;
+        x.s = yb.s = 1;
+        const ygtx = yb.cmp(x) == 1;
         x.s = xs;
-        by.s = ys;
+        yb.s = ys;
 
         if (ygtx) return x;
 
         const a = Big.DP,
             b = Big.RM;
         Big.DP = Big.RM = 0;
-        x = x.div(by);
+        x = x.div(yb);
         Big.DP = a;
         Big.RM = b;
 
-        return this.minus(x.times(by));
+        return this.minus(x.times(yb));
     }
 
     @operator('%')
@@ -769,7 +778,7 @@ export default class Big {
             e = x.e;
 
         // zero?
-        if (!x.c[0]) return Big.of(x);
+        if (!x.c[0]) return Big.ZERO;
 
         // negative?
         if (x.s < 0) {
@@ -793,7 +802,7 @@ export default class Big {
             
         } while (t.c.slice(0, e).join('') != r.c.slice(0, e).join(''));
 
-        return this.__round(Big.of(r), (Big.DP -= 4) + r.e + 1);
+        return this.__round(Big.copyOf(r), (Big.DP -= 4) + r.e + 1);
     }
 
     /**
@@ -807,7 +816,7 @@ export default class Big {
         if (sd !== ~~sd || sd < 1 || sd > Big.MAX_DP) {
             throw new Error('Invalid precision ' + sd.toString());
         }
-        return this.__round(Big.of(this), sd, rm);
+        return this.__round(Big.copyOf(this), sd, rm);
     }
 
     /**
@@ -823,7 +832,62 @@ export default class Big {
         if (dp !== ~~dp || dp < -Big.MAX_DP || dp > Big.MAX_DP) {
             throw new Error('Invalid decimal places ' + dp.toString());
         }
-        return this.__round(Big.of(this), dp + this.e + 1, rm);
+        return this.__round(Big.copyOf(this), dp + this.e + 1, rm);
+    }
+
+    /**
+     * Return a string representing the value of this {Big} in exponential notation rounded to {dp} fixed
+     * decimal places using rounding mode {rm}, or {Big.RM} if rm is not specified.
+     *
+     * @param dp? {i32}, {-MAX_DP} to {MAX_DP} inclusive
+     * @param rm? {u8} Rounding mode: 0 (down), 1 (half-up), 2 (half-even) or 3 (up)
+     */
+    toExponential(dp: i32 = 0, rm: u8 = Big.RM): string {
+        let x = this,
+            n = x.c[0];
+
+        if (dp !== ~~dp || dp < 0 || dp > Big.MAX_DP) {
+            throw new Error('Invalid decimal places ' + dp.toString());
+        }
+
+        x = this.__round(Big.copyOf(x), ++dp, rm);
+        for (; x.c.length < dp;) x.c.push(0);
+
+        return x.__stringify(true, !!n);
+    }
+
+    /**
+     * Converts this {Big} instance to {f64}.
+     */
+    toF64(): f64 {
+        // check if conversion is possible
+        const s = this.toString();
+        const n = F64.parseFloat(s);
+
+        if (!this.__validF64(this, n)) {
+            throw new RangeError('Out of float64 range: ' + s);
+        }
+
+        return n;
+    }
+
+    /**
+     * See {this.toF64}.
+     */
+    toNumber(): number {
+        return this.toF64();
+    }
+
+    /**
+     * Converts this {Big} instance to {string}.
+     * 
+     * @param radix currently ignored here
+     */
+    toString(radix: number = 10): string {
+        if (radix && radix != 10) {
+            throw new Error('Currently only radix 10 is supported: ' + radix.toString());
+        }
+        return this.__stringify(this.e <= Big.NE || this.e >= Big.PE, !!this.c[0]);
     }
 
     // Mutates the instance {x}.
@@ -882,65 +946,6 @@ export default class Big {
         return x;
     }
 
-    /**
-     * Return a string representing the value of this {Big} in exponential notation rounded to {dp} fixed
-     * decimal places using rounding mode {rm}, or {Big.RM} if rm is not specified.
-     *
-     * @param dp? {i32}, {-MAX_DP} to {MAX_DP} inclusive
-     * @param rm? {u8} Rounding mode: 0 (down), 1 (half-up), 2 (half-even) or 3 (up)
-     */
-    toExponential(dp: i32 = 0, rm: u8 = Big.RM): string {
-        let x = this,
-            n = x.c[0];
-
-        if (dp !== ~~dp || dp < 0 || dp > Big.MAX_DP) {
-            throw new Error('Invalid decimal places ' + dp.toString());
-        }
-
-        x = this.__round(Big.of(x), ++dp, rm);
-        for (; x.c.length < dp;) x.c.push(0);
-
-        return x.__stringify(true, !!n);
-    }
-
-    /**
-     * Converts this {Big} instance to {f64}.
-     */
-    toF64(): f64 {
-        // check if conversion is possible
-        const s = this.toString();
-        const n = F64.parseFloat(s);
-
-        if (!this.__validF64(this, n)) {
-            throw new RangeError('Out of float64 range: ' + s);
-        }
-
-        return n;
-    }
-
-    __validF64(x: Big, n: f64): boolean {
-        return x == Big.of(n);
-    }
-
-    /**
-     * See {this.toF64}.
-     */
-    toNumber(): number {
-        return this.toF64();
-    }
-
-    /**
-     * Converts this {Big} instance to {string}.
-     * 
-     * @param radix currently ignored here
-     */
-    toString(radix: number = 10): string {
-        if (radix && radix != 10) {
-            throw new Error('Currently only radix 10 is supported: ' + radix.toString());
-        }
-        return this.__stringify(this.e <= Big.NE || this.e >= Big.PE, !!this.c[0]);
-    }
-
     __stringify(doExponential: boolean, isNonzero: boolean): string {
         let e = this.e;
         let str = this.c.join(''),
@@ -964,6 +969,10 @@ export default class Big {
         }
 
         return this.s < 0 && isNonzero ? '-' + str : str;
+    }
+
+    __validF64(x: Big, n: f64): boolean {
+        return x == Big.of(n);
     }
 }
 

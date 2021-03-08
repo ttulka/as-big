@@ -33,7 +33,10 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 
 ### Builders
 
-- `Big.of(n)` where `n` is either another `Big` instance, string, or number.
+- `Big.of(n)` returns a `Big` instance, where 
+  - `n` is either another `Big` instance, string, or number
+- `Big.copyOf(x)` creates a copy from a `Big` instance, where 
+  - `x` is the `Big` instance to copy
 
 ### Operations
 
@@ -90,11 +93,11 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 
 ### Global Settings
 
-- `Big.DP`: the maximum number of decimal places of the results of operations involving division (default: `20`).
-- `Big.RM`: the rounding mode used when rounding to the above decimal places (default: `1`).
+- `Big.DP`: the maximum number of decimal places of the results of operations involving division (default: `20`)
+- `Big.RM`: the rounding mode used when rounding to the above decimal places (default: `1`)
 
-- `Big.PE`: the positive exponent at and above which `toString` returns exponential notation (default: `21`).
-- `Big.NE`: the negative exponent at and beneath which `toString` returns exponential notation (default: `-7`).
+- `Big.PE`: the positive exponent at and above which `toString` returns exponential notation (default: `21`)
+- `Big.NE`: the negative exponent at and beneath which `toString` returns exponential notation (default: `-7`)
 
 ## Build
 
