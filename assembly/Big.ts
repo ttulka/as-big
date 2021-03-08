@@ -34,13 +34,13 @@ export default class Big {
     static readonly TEN: Big = Big.ten();
 
     /**
-     * The positive exponent (PE) at and above which toString returns exponential notation.
+     * The positive exponent (PE) at and above which {toString} returns exponential notation.
      * 1000000 is the maximum recommended exponent value of a Big, but this limit is not enforced.
      */
     static PE: i32 = 21;// 0 to 1000000
 
     /**
-     * The negative exponent (NE) at and beneath which toString returns exponential notation.
+     * The negative exponent (NE) at and beneath which {toString} returns exponential notation.
      * -1000000 is the minimum recommended exponent value of a Big.
      */
     static NE: i32 = -7;    // 0 to -1000000
@@ -52,13 +52,13 @@ export default class Big {
     static DP: i32 = 20;    // 0 to MAX_DP
 
     // The maximum value of DP and Big.DP.
-    static MAX_DP: i32 = 1000000;   // 0 to 1000000
+    static readonly MAX_DP: i32 = 1000000;   // 0 to 1000000
 
     // The maximum magnitude of the exponent argument to the pow method.
-    static MAX_POWER: i32 = 1000000;    // 1 to 1000000
+    static readonly MAX_POWER: i32 = 1000000;    // 1 to 1000000
 
     /**
-     * The rounding mode (RM) used when rounding to the above decimal places.
+     * The default rounding mode (RM) used when rounding to the above decimal places.
      *
      *  0  Towards zero (i.e. truncate, no rounding).       (ROUND_DOWN)
      *  1  To nearest neighbour. If equidistant, round up.  (ROUND_HALF_UP)

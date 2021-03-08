@@ -31,7 +31,7 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 
 ### Builders
 
-TBD...
+- `Big.of(n)` where `n` is either another `Big` instance, string or number.
 
 ### Operations
 
@@ -42,7 +42,7 @@ TBD...
 - **times** - multiplication - `x * y` or `y.times(y)`
 - **div** - division - `x / y` or `x.div(y)`
 - **mod** - modulo - `x % y` or `x.mod(y)`
-- **pow** - power - `x ^ y` or `x.pow(y)`
+- **pow** - power - `x ^ n` or `x.pow(n)`, where `n` is `i32`
 
 #### Comparison
 
@@ -71,8 +71,10 @@ TBD...
   - `rm` is the rounding mode (`0`, `1`, `2`, `3`)
     - `0` (down), `1` (half-up), `2` (half-even) or `3` (up)
 
+#### Converters
+
 - `toString` - string representation - `let y: string = x.toString()`
-- `toNumber` - f64 represenation = `let y: f64 = x.toNumber()`
+- `toNumber` - `f64` represenation = `let y: f64 = x.toNumber()`
 
 ### Static Constants
 
@@ -83,7 +85,11 @@ TBD...
 
 ### Global Settings
 
-TBD...
+- `Big.DP` - the maximum number of decimal places of the results of operations involving division (default: `20`).
+- `Big.RM` - the rounding mode used when rounding to the above decimal places (default: `1`).
+
+- `Big.PE` - the positive exponent at and above which `toString` returns exponential notation (default: `21`).
+- `Big.NE` - the negative exponent at and beneath which `toString` returns exponential notation (default: `-7`).
 
 ## Build
 
