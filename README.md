@@ -15,6 +15,8 @@ npm install as-big --save-dev
 ```typescript
 import Big from 'as-big/Big';
 
+let r = Big.of(0.1) + Big.of(0.2);  // Big(0.3)
+
 let x = Big.of(42);
 let y = Big.of('13');
 
@@ -31,7 +33,7 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 
 ### Builders
 
-- `Big.of(n)` where `n` is either another `Big` instance, string or number.
+- `Big.of(n)` where `n` is either another `Big` instance, string, or number.
 
 ### Operations
 
@@ -70,11 +72,13 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
   - `sd` is the maximum of significant digits, and
   - `rm` is the rounding mode (`0`, `1`, `2`, `3`)
     - `0` (down), `1` (half-up), `2` (half-even) or `3` (up)
+- **sqrt** (square root): `x.sqrt()`
 
 #### Converters
 
-- `toString` (string representation): `let y: string = x.toString()`
-- `toNumber` (`f64` represenation): `let y: f64 = x.toNumber()`
+- `toString` (string representation): `let s: string = x.toString()`
+- `toNumber` (`f64` represenation): `let n: f64 = x.toNumber()`
+- `toExponential` (string represenation): `let s: string = x.toExponential()`
 
 ### Static Constants
 
@@ -82,6 +86,7 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 - `Big.ONE`: a `Big` instance with the value one `1`
 - `Big.TWO`: a `Big` instance with the value two `2`
 - `Big.TEN`: a `Big` instance with the value ten `10`
+- `Big.HALF`: a `Big` instance with the value one half `0.5`
 
 ### Global Settings
 

@@ -1,5 +1,10 @@
 import Big from 'as-big/Big';
 
+export function basics0(): number {
+    
+    return Big.of(0.1).plus(Big.of(0.2)).toNumber();
+}
+
 export function basics1(): number {
 
     let x = Big.of(42);

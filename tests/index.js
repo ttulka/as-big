@@ -11,11 +11,13 @@ module.exports = {
   cmp: (x, y) => numBiOp('cmpBig', x, y),
   round: (x, dp = 0, rm = 1) => unOp('round', x, dp, rm),
   prec: (x, sd, rm = 1) => unOp('prec', x, sd, rm),
+  toExponential: (x, dp = 0, rm = 1) => strOp('toExponential', x, dp, rm),
   plus: (x, y) => biOp('plusBig', x, y),
   minus: (x, y) => biOp('minusBig', x, y),
   times: (x, y) => biOp('timesBig', x, y),
   mod: (x, y) => biOp('modBig', x, y),
   pow: (x, n) => opNum('pow', x, n),
+  sqrt: x => unOp('sqrt', x),
   div: (x, y) => biOp('divBig', x, y),
   divDP: (x, y, dp) => {
     const dpOrigin = getDP();
@@ -29,6 +31,7 @@ module.exports = {
 [
     'toString',
     'toNumber',
+    'toExponential',
     'cmp',
     'plus',
     'minus',
@@ -38,7 +41,8 @@ module.exports = {
     'pow',
     'abs',
     'round',
-    'prec'
+    'prec',
+    'sqrt'
     
 ].forEach(method => require('./' + method));
 
@@ -56,6 +60,17 @@ function unOp(op, x, ...params) {
 
   __unpin(xPtr);
   __unpin(resPtr);
+  
+  return res;
+}
+
+function strOp(op, x, ...params) {
+  const xPtr = __pin(ofString(__newString(x)));
+  const xb = Big.wrap(xPtr);
+
+  const res = __getString(xb[op](...params));
+
+  __unpin(xPtr);
   
   return res;
 }

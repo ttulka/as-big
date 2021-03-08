@@ -5,6 +5,7 @@ module.exports = wasm.exports;
 
 const { __getString } = wasm.exports;
 
+console.log('Basics #0:', wasm.exports.basics0());
 console.log('Basics #1:', wasm.exports.basics1());
 console.log('Basics #2:', __getString(wasm.exports.basics2()));
 console.log('Basics #3:', wasm.exports.basics3());

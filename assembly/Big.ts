@@ -1,5 +1,3 @@
-export declare function logme(expected: i32, actual: i32): void
-
 /**
  * Representation of big decimals.
  * 
@@ -32,6 +30,12 @@ export default class Big {
      */
     @lazy
     static readonly TEN: Big = Big.ten();
+
+    /**
+     * {Big} instance with the value one half {0.5}.
+     */
+    @lazy
+    static readonly HALF: Big = Big.half();
 
     /**
      * The positive exponent (PE) at and above which {toString} returns exponential notation.
@@ -69,7 +73,7 @@ export default class Big {
 
     /**
      * Default contructor. 
-     * See {of} for other options.
+     * See {#of} for other options.
      *
      * @param s     // sign
      * @param e     // decimal point
@@ -79,7 +83,8 @@ export default class Big {
     }
 
     /**
-     * Creates a new {Big} instance from generic type T
+     * Returns a new {Big} instance from generic type {T}.
+     * 
      * @param  n the number as {Big}, {string}, or {number}
      * @return the new {Big} instance
      */
@@ -134,6 +139,15 @@ export default class Big {
         const arr = new Array<u8>(1);
         arr[0] = 1;
         return new Big(1, 1, arr);
+    }
+
+    /**
+     * Returns a {Big} with the value {0.5} (half).
+     */
+    static half(): Big {
+        const arr = new Array<u8>(1);
+        arr[0] = 5;
+        return new Big(1, -1, arr);
     }
 
     /**
@@ -572,16 +586,12 @@ export default class Big {
      */
     //@operator('/')
     div<T>(y: T): Big {
-        let by = Big.of(y);
+        let yb = Big.of(y);
         var x = this,
             a = x.c,    // dividend
-            b = by.c,   // divisor
-            k: i8 = x.s == by.s ? 1 : -1,
+            b = yb.c,   // divisor
+            k: i8 = x.s == yb.s ? 1 : -1,
             dp = Big.DP;
-
-        if (dp !== ~~dp || dp < 0 || dp > Big.MAX_DP) {
-            throw new Error('Invalid decimal places ' + dp.toString());
-        }
 
         // divisor is zero?
         if (!b[0]) {
@@ -590,11 +600,11 @@ export default class Big {
 
         // dividend is 0? return +-0
         if (!a[0]) {
-            by.s = k;
-            by.c = new Array<u8>(1);
-            by.c[0] = 0;
-            by.e = 0
-            return by;
+            yb.s = k;
+            yb.c = new Array<u8>(1);
+            yb.c[0] = 0;
+            yb.e = 0
+            return yb;
         }
 
         let bl: i32, bt: i32, cmp: i32, ri: i32,
@@ -603,10 +613,10 @@ export default class Big {
             al = a.length,
             r = a.slice(0, bl),   // remainder
             rl = r.length,
-            q = by,               // quotient
+            q = yb,               // quotient
             qc = q.c = [],
             qi = 0,
-            p = dp + (q.e = x.e - by.e) + 1;    // precision of the result
+            p = dp + (q.e = x.e - yb.e) + 1;    // precision of the result
 
         q.s = k;
         let m = p < 0 ? 0 : p;
@@ -754,6 +764,38 @@ export default class Big {
         return isneg ? one.div(y) : y;
     }
 
+    sqrt(): Big {
+        let x = this,
+            e = x.e;
+
+        // zero?
+        if (!x.c[0]) return Big.of(x);
+
+        // negative?
+        if (x.s < 0) {
+            throw new Error('No square root for negative numbers ' + this.toString());
+        }
+
+        // estimate  // TODO doesn't work well with built-in Math.sqrt
+        // let f = F64.parseFloat(x.toString());
+        // if (this.__validF64(x, f)) {
+        //     return Big.of(Math.sqrt(f)).round(Big.DP);
+        // }
+        let r = x,
+            t = r;
+
+        e = r.e + (Big.DP += 4);
+        
+        // Newton-Raphson iteration
+        do {
+            t = r;
+            r = t.plus(x.div(t)).times(Big.HALF).round(Big.DP);
+            
+        } while (t.c.slice(0, e).join('') != r.c.slice(0, e).join(''));
+
+        return this.__round(Big.of(r), (Big.DP -= 4) + r.e + 1);
+    }
+
     /**
      * Returns a new {Big} whose value is the value of this {Big} rounded to a maximum precision of {sd}
      * significant digits using rounding mode {rm}, or {Big.RM} if {rm} is not specified.
@@ -841,6 +883,27 @@ export default class Big {
     }
 
     /**
+     * Return a string representing the value of this {Big} in exponential notation rounded to {dp} fixed
+     * decimal places using rounding mode {rm}, or {Big.RM} if rm is not specified.
+     *
+     * @param dp? {i32}, {-MAX_DP} to {MAX_DP} inclusive
+     * @param rm? {u8} Rounding mode: 0 (down), 1 (half-up), 2 (half-even) or 3 (up)
+     */
+    toExponential(dp: i32 = 0, rm: u8 = Big.RM): string {
+        let x = this,
+            n = x.c[0];
+
+        if (dp !== ~~dp || dp < 0 || dp > Big.MAX_DP) {
+            throw new Error('Invalid decimal places ' + dp.toString());
+        }
+
+        x = this.__round(Big.of(x), ++dp, rm);
+        for (; x.c.length < dp;) x.c.push(0);
+
+        return x.__stringify(true, !!n);
+    }
+
+    /**
      * Converts this {Big} instance to {f64}.
      */
     toF64(): f64 {
@@ -848,11 +911,15 @@ export default class Big {
         const s = this.toString();
         const n = F64.parseFloat(s);
 
-        if (this.neq(Big.of(n))) {
+        if (!this.__validF64(this, n)) {
             throw new RangeError('Out of float64 range: ' + s);
         }
 
         return n;
+    }
+
+    __validF64(x: Big, n: f64): boolean {
+        return x == Big.of(n);
     }
 
     /**
