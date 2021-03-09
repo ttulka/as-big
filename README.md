@@ -99,6 +99,10 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 - `Big.PE`: the positive exponent at and above which `toString` returns exponential notation (default: `21`)
 - `Big.NE`: the negative exponent at and beneath which `toString` returns exponential notation (default: `-7`)
 
+## Examples
+
+There is a collection of examples in the [`examples`](https://github.com/ttulka/as-big/tree/main/examples/assembly) directory.
+
 ## Build
 
 The `assembly` directory contains AS source code.
