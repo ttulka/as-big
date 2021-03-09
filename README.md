@@ -48,6 +48,7 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
 - **div** (division): `x / y` or `x.div(y)`
 - **mod** (modulo): `x % y` or `x.mod(y)`
 - **pow** (power): `x ^ n` or `x.pow(n)`, where `n` is `i32`
+- **sqrt** (square root): `x.sqrt()`
 
 #### Comparison
 
@@ -75,7 +76,6 @@ let c = a0 + Big.TEN / Big.TWO; // Big(65)
   - `sd` is the maximum of significant digits, and
   - `rm` is the rounding mode (`0`, `1`, `2`, `3`)
     - `0` (down), `1` (half-up), `2` (half-even) or `3` (up)
-- **sqrt** (square root): `x.sqrt()`
 
 #### Converters
 
