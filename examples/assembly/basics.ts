@@ -2,7 +2,7 @@ import Big from 'as-big/Big';
 
 export function basics0(): number {
     
-    return Big.of(0.1).plus(Big.of(0.2)).toNumber();
+    return Big.of(0.1).plus(Big.of(0.2)).toNumber();    // 0.3  
 }
 
 export function basics1(): number {
@@ -35,5 +35,5 @@ export function basics2(): string {
 
 export function basics3(): boolean {
 
-    return Big.ONE > Big.ZERO && Big.TWO >= Big.ONE && Big.TWO < Big.TEN && Big.TEN <= Big.TEN;
+    return Big.ONE > Big.ZERO && Big.TWO >= Big.ONE && Big.TWO < Big.TEN && Big.TEN <= Big.TEN; // true
 }
