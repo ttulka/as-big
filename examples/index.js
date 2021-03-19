@@ -15,3 +15,6 @@ console.log('Pi constant (Big):   ', __getString(wasm.exports.pi(10000, 100)));
 
 console.log('Euler’s constant (native):', wasm.exports.euler_native(100));
 console.log('Euler’s constant (Big):   ', __getString(wasm.exports.euler(100, 100)));
+
+console.log('Rump’s Royal Pain (native):', wasm.exports.rump_native());
+console.log('Rump’s Royal Pain (Big):   ', __getString(wasm.exports.rump()));
