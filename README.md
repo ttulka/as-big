@@ -13,12 +13,12 @@ npm install as-big --save-dev
 ## Use
 
 ```typescript
-import Big from 'as-big/Big';
+import Big from "as-big/Big";
 
 let r = Big.of(0.1) + Big.of(0.2);  // Big(0.3)
 
 let x = Big.of(42);
-let y = Big.of('13');
+let y = Big.of("13");
 
 let a = x + y;          // Big(55)
     a = x.plus(13);     // Big(55)
