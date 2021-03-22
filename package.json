@@ -22,7 +22,6 @@
     "url": "https://github.com/ttulka/as-big/issues"
   },
   "types": "assembly/index.ts",
-  "main": "index.js",
   "scripts": {
     "test": "node tests",
     "asbuild:untouched": "asc assembly/index.ts --target debug",
@@ -30,7 +29,7 @@
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
   },
   "devDependencies": {
-    "@assemblyscript/loader": "^0.18.13",
-    "assemblyscript": "^0.18.13"
+    "@assemblyscript/loader": "^0.18.15",
+    "assemblyscript": "^0.18.15"
   }
 }
