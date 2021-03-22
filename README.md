@@ -7,7 +7,7 @@ Highly inspired by [big.js](https://github.com/MikeMcl/big.js)
 ## Install
 
 ```sh
-npm install as-big --save-dev
+npm install as-big --save
 ```
 
 ## Use
