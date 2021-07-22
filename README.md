@@ -2,8 +2,6 @@
 
 [AssemblyScript](https://github.com/AssemblyScript/assemblyscript) library for arbitrary-precision decimal arithmetic 🚀 
 
-Highly inspired by [big.js](https://github.com/MikeMcl/big.js)
-
 ## Install
 
 ```sh
@@ -114,7 +112,7 @@ npm run asbuild
 
 ## Test
 
-The `tests` directory contains unit all tests.
+The `tests` directory contains all unit tests.
 
 Run all the tests:
 
