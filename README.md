@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-npm install --save as-big
+npm install as-big
 ```
 
 ## Use
