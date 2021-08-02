@@ -2,10 +2,8 @@
  * Representation of big decimals.
  * 
  * All operations are immutable.
- * 
- * TODO
  */
-export default class Big {
+ export default class Big {
 
     /**
      * {Big} instance with the value zero {0}.
@@ -119,7 +117,7 @@ export default class Big {
      */
     static zero(): Big {
         const arr = new Array<u8>(1);
-        arr[0] = 0;
+        unchecked(arr[0] = 0);
         return new Big(1, 0, arr);
     }
 
@@ -128,7 +126,7 @@ export default class Big {
      */
     static one(): Big {
         const arr = new Array<u8>(1);
-        arr[0] = 1;
+        unchecked(arr[0] = 1);
         return new Big(1, 0, arr);
     }
 
@@ -137,7 +135,7 @@ export default class Big {
      */
     static two(): Big {
         const arr = new Array<u8>(1);
-        arr[0] = 2;
+        unchecked(arr[0] = 2);
         return new Big(1, 0, arr);
     }
 
@@ -146,7 +144,7 @@ export default class Big {
      */
     static ten(): Big {
         const arr = new Array<u8>(1);
-        arr[0] = 1;
+        unchecked(arr[0] = 1);
         return new Big(1, 1, arr);
     }
 
@@ -155,7 +153,7 @@ export default class Big {
      */
     static half(): Big {
         const arr = new Array<u8>(1);
-        arr[0] = 5;
+        unchecked(arr[0] = 5);
         return new Big(1, -1, arr);
     }
 
@@ -275,7 +273,7 @@ export default class Big {
             ye = yb.e;
 
         // either zero?
-        if (!xc[0] || !yc[0]) return !xc[0] ? !yc[0] ? 0 : -ys : xs;
+        if (unchecked(!xc[0] || !yc[0])) return unchecked(!xc[0] ? !yc[0] ? 0 : -ys : xs);
 
         // signs differ?
         if (xs != ys) return xs;
@@ -289,7 +287,7 @@ export default class Big {
 
         // compare digit by digit
         for (let i = -1; ++i < e;) {
-            if (xc[i] != yc[i]) return xc[i] > yc[i] ^ isneg ? 1 : -1;
+            if (unchecked(xc[i] != yc[i])) return unchecked(xc[i] > yc[i] ^ isneg ? 1 : -1);
         }
 
         // compare lengths
@@ -329,9 +327,9 @@ export default class Big {
             yc = yb.c;
 
         // either zero?
-        if (!xc[0] || !yc[0]) {
-            if (!yc[0]) {
-                if (xc[0]) {
+        if (unchecked(!xc[0] || !yc[0])) {
+            if (unchecked(!yc[0])) {
+                if (unchecked(xc[0])) {
                     yb = Big.copyOf(x);
                 } else {
                     yb.s = x.s;
@@ -369,7 +367,7 @@ export default class Big {
 
         let m: u8;
         // only start adding at yc.length - 1 as the further digits of xc can be left as they are
-        for (m = 0; e; xc[e] %= 10) m = (xc[--e] = <u8>(xc[e] + yc[e] + m)) / 10 | 0;
+        for (m = 0; e; unchecked(xc[e] %= 10)) m = unchecked((xc[--e] = <u8>(xc[e] + yc[e] + m)) / 10 | 0);
 
         // no need to check for zero, as +x + +y != 0 && -x + -y != 0
 
@@ -379,7 +377,7 @@ export default class Big {
         }
 
         // remove trailing zeros
-        for (e = xc.length; xc[--e] === 0;) xc.pop();
+        for (e = xc.length; unchecked(xc[--e] === 0);) xc.pop();
 
         yb.c = xc;
         yb.e = ye;
@@ -418,10 +416,10 @@ export default class Big {
             ye = yb.e;
 
         // either zero?
-        if (!xc[0] || !yc[0]) {
-            if (yc[0]) {
+        if (unchecked(!xc[0] || !yc[0])) {
+            if (unchecked(yc[0])) {
                 yb.s = -ys;
-            } else if (xc[0]) {
+            } else if (unchecked(xc[0])) {
                 yb = Big.copyOf(x);
             } else {
                 yb.s = 1;
@@ -450,8 +448,8 @@ export default class Big {
             j = ((xlty = xc.length < yc.length) ? xc : yc).length;
 
             for (a = b = 0; b < j; b++) {
-                if (xc[b] != yc[b]) {
-                    xlty = xc[b] < yc[b];
+                if (unchecked(xc[b] != yc[b])) {
+                    xlty = unchecked(xc[b] < yc[b]);
                     break;
                 }
             }
@@ -470,31 +468,31 @@ export default class Big {
 
         // subtract yc from xc
         for (b = i; j > a;) {
-            if (xc[--j] < yc[j]) {
-                for (i = j; i && !xc[--i];) xc[i] = 9;
-                --xc[i];
-                xc[j] += 10;
+            if (unchecked(xc[--j] < yc[j])) {
+                for (i = j; i && unchecked(!xc[--i]);) unchecked(xc[i] = 9);
+                unchecked(--xc[i]);
+                unchecked(xc[j] += 10);
             }
 
-            xc[j] -= yc[j];
+            unchecked(xc[j] -= yc[j]);
         }
 
         // remove trailing zeros
-        for (; xc[--b] === 0;) xc.pop();
+        for (; unchecked(xc[--b] === 0);) xc.pop();
 
         // remove leading zeros and adjust exponent accordingly
-        for (; xc[0] === 0;) {
+        for (; unchecked(xc[0] === 0);) {
             xc.shift();
             --ye;
         }
 
-        if (!xc[0]) {
+        if (unchecked(!xc[0])) {
             // n - n = +0
             yb.s = 1;
 
             // result must be zero
             xc = new Array<u8>(1);
-            xc[0] = 0;
+            unchecked(xc[0] = 0);
             ye = 0;
         }
 
@@ -529,9 +527,9 @@ export default class Big {
         yb.s = x.s == yb.s ? 1 : -1;
 
         // return signed 0 if either 0
-        if (!xc[0] || !yc[0]) {
+        if (unchecked(!xc[0] || !yc[0])) {
             yb.c = new Array<u8>(1);
-            yb.c[0] = 0;
+            unchecked(yb.c[0] = 0);
             yb.e = 0;
             return yb;
         }
@@ -550,7 +548,7 @@ export default class Big {
         }
 
         // initialise coefficient array of result with zeros
-        for (c = new Array<u8>(j = a + b); j--;) c[j] = 0;
+        for (c = new Array<u8>(j = a + b); j--;) unchecked(c[j] = 0);
 
         // Multiply
 
@@ -562,14 +560,14 @@ export default class Big {
             for (j = a + i; j > i;) {
 
                 // current sum of products at this digit position, plus carry
-                b = c[j] + yc[i] * xc[j - i - 1] + b;
-                c[j--] = u8(b % 10);
+                b = unchecked(c[j] + yc[i] * xc[j - i - 1] + b);
+                unchecked(c[j--] = u8(b % 10));
 
                 // carry
                 b = b / 10 | 0;
             }
 
-            c[j] = b as u8;
+            unchecked(c[j] = b as u8);
         }
 
         // increment result exponent if there is a final carry, otherwise remove leading zero
@@ -577,7 +575,7 @@ export default class Big {
         else c.shift();
 
         // remove trailing zeros
-        for (i = c.length; !c[--i];) c.pop();
+        for (i = c.length; unchecked(!c[--i]);) c.pop();
         yb.c = c;
 
         return yb;
@@ -603,15 +601,15 @@ export default class Big {
             dp = Big.DP;
 
         // divisor is zero?
-        if (!b[0]) {
+        if (unchecked(!b[0])) {
             throw new Error('Division by zero');
         }
 
         // dividend is 0? return +-0
-        if (!a[0]) {
+        if (unchecked(!a[0])) {
             yb.s = k;
             yb.c = new Array<u8>(1);
-            yb.c[0] = 0;
+            unchecked(yb.c[0] = 0);
             yb.e = 0
             return yb;
         }
@@ -646,8 +644,8 @@ export default class Big {
 
                 } else {
                     for (ri = -1, cmp = 0; ++ri < bl;) {
-                        if (b[ri] != r[ri]) {
-                            cmp = b[ri] > r[ri] ? 1 : -1;
+                        if (unchecked(b[ri] != r[ri])) {
+                            cmp = unchecked(b[ri] > r[ri]) ? 1 : -1;
                             break;
                         }
                     }
@@ -658,16 +656,16 @@ export default class Big {
                     // remainder can't be more than 1 digit longer than divisor
                     // equalise lengths using divisor with extra leading zero?
                     for (let ct = rl == bl ? b : bz; rl;) {
-                        if (r[--rl] < ct[rl]) {
+                        if (unchecked(r[--rl] < ct[rl])) {
                             ri = rl;
-                            for (; ri && !r[--ri];) r[ri] = 9;
-                            --r[ri];
-                            r[rl] += 10;
+                            for (; ri && unchecked(!r[--ri]);) unchecked(r[ri] = 9);
+                            unchecked(--r[ri]);
+                            unchecked(r[rl] += 10);
                         }
-                        r[rl] -= ct[rl];
+                        unchecked(r[rl] -= ct[rl]);
                     }
 
-                    for (; !r[0];) r.shift();
+                    for (; unchecked(!r[0]);) r.shift();
 
                 } else {
                     break;
@@ -678,16 +676,16 @@ export default class Big {
             qc[qi++] = cmp ? n : ++n;
 
             // update the remainder.
-            if (r[0] && cmp) r[rl] = a.length > ai ? a[ai] : 0;
+            if (unchecked(r[0]) && cmp) r[rl] = a.length > ai ? unchecked(a[ai]) : 0;
             else {
                 r = new Array<u8>(1);
-                r[0] = a.length > ai ? a[ai] : 0;
+                unchecked(r[0] = a.length > ai ? a[ai] : 0);
             }
 
         } while ((ai++ < al || r.length >= 0) && m-- > 0);
 
         // leading zero? Do not remove if result is simply zero (qi == 1)
-        if (!qc[0] && qi != 1) {
+        if (unchecked(!qc[0]) && qi != 1) {
             // there can't be more than one zero
             qc.shift();
             q.e--;
@@ -716,7 +714,7 @@ export default class Big {
         let x = Big.copyOf(this),
             yb = y instanceof Big ? Big.copyOf(y) : Big.of(y);
 
-        if (!yb.c[0]) {
+        if (unchecked(!yb.c[0])) {
             throw new Error('Division by zero');
         }
 
@@ -778,7 +776,7 @@ export default class Big {
             e = x.e;
 
         // zero?
-        if (!x.c[0]) return Big.ZERO;
+        if (unchecked(!x.c[0])) return Big.ZERO;
 
         // negative?
         if (x.s < 0) {
@@ -844,7 +842,7 @@ export default class Big {
      */
     toExponential(dp: i32 = 0, rm: u8 = Big.RM): string {
         let x = this,
-            n = x.c[0];
+            n = unchecked(x.c[0]);
 
         if (dp !== ~~dp || dp < 0 || dp > Big.MAX_DP) {
             throw new Error('Invalid decimal places ' + dp.toString());
@@ -887,7 +885,7 @@ export default class Big {
         if (radix && radix != 10) {
             throw new Error('Currently only radix 10 is supported: ' + radix.toString());
         }
-        return this.__stringify(this.e <= Big.NE || this.e >= Big.PE, !!this.c[0]);
+        return this.__stringify(this.e <= Big.NE || this.e >= Big.PE, unchecked(!!this.c[0]));
     }
 
     // Mutates the instance {x}.
@@ -899,31 +897,33 @@ export default class Big {
         }
 
         if (sd < 1) {
-            more =
+            more = unchecked(
                 rm === 3 && (more || !!xc[0]) || sd === 0 && (
                     rm === 1 && xc[0] >= 5 ||
                     rm === 2 && (xc[0] > 5 || xc[0] === 5 && (more || xc.length > 1))
-                );
+                )
+            );
 
             xc.length = 1;
 
             if (more) {
                 // 1, 0.1, 0.01, 0.001, 0.0001 etc.
                 x.e = x.e - sd + 1;
-                xc[0] = 1;
+                unchecked(xc[0] = 1);
 
             } else {
                 // zero
-                xc[0] = 0;
+                unchecked(xc[0] = 0);
                 x.e = 0;
             }
         } else if (sd < xc.length) {
             // xc[sd] is the digit after the digit that may be rounded up.
-            more =
+            more = unchecked(
                 rm === 1 && xc[sd] >= 5 ||
                 rm === 2 && (xc[sd] > 5 || xc[sd] === 5 &&
                     (more || xc.length > sd + 1 || xc[sd - 1] & 1)) ||
-                rm === 3 && (more || !!xc[0]);
+                rm === 3 && (more || !!xc[0])
+            );
 
             // remove any digits after the required precision
             xc.length = sd--;
@@ -931,8 +931,8 @@ export default class Big {
             // round up?
             if (more) {
                 // rounding up may mean the previous digit has to be rounded up
-                for (; sd >= 0 && ++xc[sd] > 9;) {
-                    xc[sd] = 0;
+                for (; sd >= 0 && unchecked(++xc[sd] > 9);) {
+                    unchecked(xc[sd] = 0);
                     if (!sd--) {
                         ++x.e;
                         xc.unshift(1);
@@ -940,7 +940,7 @@ export default class Big {
                 }
             }
             // remove trailing zeros
-            for (sd = xc.length; --sd >= 0 && !xc[sd];) xc.pop();
+            for (sd = xc.length; --sd >= 0 && unchecked(!xc[sd]);) xc.pop();
         }
 
         return x;
@@ -1023,7 +1023,7 @@ class BigOfString extends Big {
         // zero
         if (i === len) {
             xc = new Array<u8>(1);
-            xc[0] = 0;
+            unchecked(xc[0] = 0);
             xe = 0;
             xs = 1;
 
@@ -1035,7 +1035,7 @@ class BigOfString extends Big {
             xc = new Array<u8>(len - i + 1);
 
             // convert string to array of digits without leading/trailing zeros.
-            for (e = 0; i <= len;) xc[e++] = U8.parseInt(n.charAt(i++));
+            for (e = 0; i <= len;) unchecked(xc[e++] = U8.parseInt(n.charAt(i++)));
         }
 
         super(xs, xe, xc);
