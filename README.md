@@ -126,6 +126,6 @@ Test a single method:
 node tests/<method>
 ```
 
-## Licence
+## License
 
 [MIT](https://github.com/ttulka/as-big/blob/main/LICENSE)
