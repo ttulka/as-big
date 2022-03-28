@@ -1,5 +1,5 @@
-const { times } = require('.');
-const { strictEqual } = require('assert');
+import { times } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(times('0', '0'), '0');
 strictEqual(times('1', '1'), '1');

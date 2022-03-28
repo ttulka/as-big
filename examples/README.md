@@ -8,7 +8,7 @@ See contennt of [`assembly`](https://github.com/ttulka/as-big/tree/main/examples
 
 ```sh
 npm i
-npm run asbuild:optimized
+npm run asbuild:release
 ```
 
 ## Test

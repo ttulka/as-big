@@ -1,11 +1,9 @@
-const assert = require('assert');
-const myModule = require('..');
+import { basics0, basics1, basics2, basics3 } from '../index.js';
+import { strictEqual } from 'assert';
 
-const { __getString } = myModule;
-
-assert.strictEqual(myModule.basics0(), 0.3);
-assert.strictEqual(myModule.basics1(), 35.0);
-assert.strictEqual(__getString(myModule.basics2()), '33.33334');
-assert.strictEqual(!!myModule.basics3(), true);
+strictEqual(basics0(), 0.3);
+strictEqual(basics1(), 35.0);
+strictEqual(basics2(), '33.33334');
+strictEqual(!!basics3(), true);
 
 console.log('tests ok');

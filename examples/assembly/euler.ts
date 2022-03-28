@@ -1,4 +1,4 @@
-import Big from 'as-big/Big';
+import Big from 'as-big/assembly/Big';
 
 export function euler(n: i32 = 100, dp: i32 = 100): string {
 
@@ -18,8 +18,7 @@ export function euler(n: i32 = 100, dp: i32 = 100): string {
     return sum.toString();
 }
 
-export function euler_native(n: i32 = 100): f64 {
-
+export function euler_native(n: i32): f64 {
     let sum = 0.0, 
         fac = 1.0;
 

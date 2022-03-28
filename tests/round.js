@@ -1,5 +1,5 @@
-const { round } = require('.');
-const { strictEqual } = require('assert');
+import { round } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(round('0'), '0');
 strictEqual(round('-0'), '0');

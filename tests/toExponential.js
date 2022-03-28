@@ -1,5 +1,5 @@
-const { toExponential } = require('.');
-const { strictEqual } = require('assert');
+import { toExponential } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(toExponential('0', 0), '0e+0');
 strictEqual(toExponential('-0', 0), '0e+0');

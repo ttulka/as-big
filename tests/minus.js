@@ -1,5 +1,5 @@
-const { minus } = require('.');
-const { strictEqual } = require('assert');
+import { minus } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(minus('0', '0'), '0');
 strictEqual(minus('1', '0'), '1');

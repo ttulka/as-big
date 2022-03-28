@@ -1,5 +1,5 @@
-const { sqrt } = require('.');
-const { strictEqual, throws } = require('assert');
+import { sqrt } from './_loader.js';
+import { strictEqual, throws } from 'assert';
 
 strictEqual(sqrt('0'), '0');
 strictEqual(sqrt('-0'), '0');

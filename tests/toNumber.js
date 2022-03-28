@@ -1,5 +1,5 @@
-const { stringToNumber } = require('.');
-const { strictEqual, throws } = require('assert');
+import { stringToNumber } from './_loader.js';
+import { strictEqual, throws } from 'assert';
 
 strictEqual(stringToNumber('0'), 0);
 strictEqual(stringToNumber('1'), 1);
