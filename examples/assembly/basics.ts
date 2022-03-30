@@ -1,4 +1,4 @@
-import Big from 'as-big/Big';
+import Big from 'as-big';
 
 export function basics0(): number {
     

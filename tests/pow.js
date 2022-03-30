@@ -1,5 +1,5 @@
-const { pow } = require('.');
-const { strictEqual } = require('assert');
+import { pow } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(pow('0', 0), '1');
 strictEqual(pow('123', 0), '1');

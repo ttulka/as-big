@@ -1,5 +1,5 @@
-const { div, divDP } = require('.');
-const { strictEqual } = require('assert');
+import { div, divDP } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(div('2', '2'), '1');
 strictEqual(div('1', '1'), '1');

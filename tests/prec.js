@@ -1,5 +1,5 @@
-const { prec } = require('.');
-const { strictEqual } = require('assert');
+import { prec } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(prec('0', 1), '0');
 strictEqual(prec('1', 1), '1');

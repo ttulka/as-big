@@ -1,5 +1,5 @@
-const { cmp } = require('.');
-const { strictEqual } = require('assert');
+import { cmp } from './_loader.js';
+import { strictEqual } from 'assert';
 
 strictEqual(cmp('0', '0'), 0);
 strictEqual(cmp('-0', '0'), 0);

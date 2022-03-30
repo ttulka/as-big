@@ -1,4 +1,4 @@
-import Big from 'as-big/Big';
+import Big from 'as-big/assembly/Big';
 
 // https://web.archive.org/web/20180729032331/http://arith22.gforge.inria.fr/slides/06-gustafson.pdf
 

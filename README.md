@@ -11,7 +11,7 @@ npm install as-big
 ## Use
 
 ```typescript
-import Big from "as-big/Big";
+import Big from "as-big";
 
 let r = Big.of(0.1) + Big.of(0.2);  // Big(0.3)
 
