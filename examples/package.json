@@ -14,7 +14,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "as-big": "^0.2.0",
-    "assemblyscript": "^0.20.3"
+    "as-big": "^0.2.1",
+    "assemblyscript": "^0.22.0"
   }
 }
