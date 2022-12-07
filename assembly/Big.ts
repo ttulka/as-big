@@ -3,7 +3,7 @@
  * 
  * All operations are immutable.
  */
- export default class Big {
+export default class Big {
 
     /**
      * {Big} instance with the value zero {0}.
@@ -68,6 +68,26 @@
      *  3  Away from zero.                                  (ROUND_UP)
      */
     static RM: u8 = 1;  // 0, 1, 2 or 3
+
+    /**
+     * Towards zero (i.e. truncate, no rounding).
+     */
+    static readonly ROUND_DOWN: u8 = 0;
+
+    /**
+     * To nearest neighbour. If equidistant, round up.
+     */
+    static readonly ROUND_HALF_UP: u8 = 1;
+
+    /**
+     * To nearest neighbour. If equidistant, to even.
+     */
+    static readonly ROUND_HALF_EVEN: u8 = 2;
+
+    /**
+     * Away from zero.
+     */
+    static readonly ROUND_UP: u8 = 3;
 
     /**
      * Default contructor. 
@@ -614,7 +634,7 @@
             return yb;
         }
 
-        let bl: i32, bt: i32, cmp: i32, ri: i32,
+        let bl: i32, cmp: i32, ri: i32,
             bz = b.slice(),
             ai = bl = b.length,
             al = a.length,
@@ -633,6 +653,8 @@
 
         // add zeros to make remainder as long as divisor
         for (; rl++ < bl;) r.push(0);
+
+        cmp = 0;
 
         let n: u8;
         do {
