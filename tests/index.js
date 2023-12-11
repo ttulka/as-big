@@ -15,5 +15,3 @@
     'sqrt'
     
 ].forEach(method => import ('./' + method + '.js'));
-
-console.log('tests ok');

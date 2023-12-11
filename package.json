@@ -30,6 +30,6 @@
     "asbuild": "npm run asbuild:debug && npm run asbuild:release"
   },
   "devDependencies": {
-    "assemblyscript": "^0.25.0"
+    "assemblyscript": "^0.27.22"
   }
 }
