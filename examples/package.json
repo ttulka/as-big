@@ -13,8 +13,8 @@
   "author": "Tomas Tulkas (ttulka)",
   "license": "MIT",
   "type": "module",
-  "devDependencies": {
-    "as-big": "^0.2.1",
-    "assemblyscript": "^0.22.0"
+  "dependencies": {
+    "as-big": "^0.2.3",
+    "assemblyscript": "^0.27.22"
   }
 }
